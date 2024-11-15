@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 // Register user
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, role, password } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
@@ -13,7 +13,7 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, role, password });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
